@@ -1,0 +1,31 @@
+# Static portfolio: run the Node test suite on every branch and publish a
+# GitLab Pages preview from the redesign branch and the default branch.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  image: node:22-alpine
+  script:
+    - node --test tests/portfolio.test.cjs
+
+pages:
+  stage: deploy
+  image: alpine:3.20
+  script:
+    - mkdir -p public
+    - cp index.html styles.css app.js portfolio-data.js portfolio-render.js public/
+  pages: true
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "redesign/editorial-dimension"
