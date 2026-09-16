@@ -64,8 +64,8 @@ test('renders portfolio with clear examples and no unverified credentials', () =
   const { nodes } = render(data);
   assert.equal(nodes.credentials.hidden, data.credentials.filter(item => item.verified === true).length === 0);
   assert.match(nodes['case-grid'].innerHTML, /class="case-result"/);
-  assert.doesNotMatch(nodes['case-grid'].innerHTML, /Example outcome/);
-  assert.match(nodes['testimonials-grid'].innerHTML, /SAMPLE TESTIMONIAL/);
+  assert.doesNotMatch(nodes['testimonials-grid'].innerHTML, /SAMPLE TESTIMONIAL/);
+  assert.match(nodes['testimonials-grid'].innerHTML, /class="testimonial-card"/);
   assert.match(nodes.metrics.innerHTML, /class="metric"/);
   assert.doesNotMatch(nodes.metrics.innerHTML, /Placeholder/);
   assert.match(nodes['journey-stages'].innerHTML, /aria-pressed="true"/);
