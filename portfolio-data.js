@@ -8,12 +8,42 @@ window.PORTFOLIO = {
   location: 'London, UK',
   calendar: '',
   resumeUrl: 'resume.pdf',
-  showInsights: true,
+  showInsights: false,
   pillars: [
     { icon: '♡', title: 'Customer Advocacy', text: 'Champion customer needs and build long-term trust.' },
     { icon: '◎', title: 'Product Adoption', text: 'Help customers realize value faster through onboarding and enablement.' },
     { icon: '◇', title: 'Retention', text: 'Identify risk early and create proactive success strategies.' },
     { icon: '↗', title: 'Expansion', text: 'Grow customer value through outcomes, not pushy selling.' }
+  ],
+  aiProjects: [
+    {
+      title: 'DecodeDx — AI-Driven Health Platform',
+      category: 'AI Platform & Automation',
+      description: 'Built and launched DecodeDx, an AI-powered SaaS health platform by translating complex clinical and user requirements into automated workflows, reducing manual effort by 25% and improving operational efficiency.',
+      metric: '-25% Manual Effort',
+      tags: ['SaaS', 'Workflow Automation', 'HealthTech', 'Clinical Workflows']
+    },
+    {
+      title: 'DAVE Machinery — Equipment Sourcing Platform',
+      category: 'B2B Sourcing & Transaction Automation',
+      description: 'Engineered heavy equipment sourcing and buyer match workflows for UK and global buyers, automating machinery intake verification, structured customer inquiries, and deal-stage handoffs.',
+      metric: 'Automated Routing',
+      tags: ['Inventory Matching', 'B2B Sourcing', 'Buyer Workflows', 'CRM Sync']
+    },
+    {
+      title: 'Proactive Health Scoring & Churn Detection',
+      category: 'Customer Intelligence & Automation',
+      description: 'Built automated multi-signal health score telemetry tracking feature adoption decline, support ticket velocity, and champion role changes to alert CSMs 30 days prior to contract renewal.',
+      metric: '30-Day Churn Warning',
+      tags: ['Health Scores', 'Early Warning System', 'Telemetry', 'Slack Alerts']
+    },
+    {
+      title: 'Automated QBR & Value Milestone Synthesis',
+      category: 'Reporting & Enablement Automation',
+      description: 'Automated data synthesis pipeline aggregating account telemetry, license utilization, and business outcomes into executive-ready Quarterly Business Review decks.',
+      metric: '4x Faster QBR Prep',
+      tags: ['QBR Automation', 'Data Synthesis', 'Account Enablement', 'ROI Reporting']
+    }
   ],
   roles: [
     {

@@ -44,6 +44,13 @@ DY Patil University
 
 ---
 
+## CERTIFICATIONS
+
+* **Project Management** | Google (2022)
+* **Jira** | Atlassian (2021)
+
+---
+
 ## TECHNICAL SKILLS
 
 * **Customer Success:** Enterprise Account Management, Customer Onboarding, Renewal, Expansion, Quarterly Business Reviews (QBR), Customer Health Score, Churn Mitigation, Stakeholder Management.

@@ -177,22 +177,26 @@
 
   // Testimonials: a snap track with explicit controls on every viewport.
   const carousel = byId('testimonials-grid');
-  const moveCarousel = direction => {
-    const card = carousel.querySelector('.testimonial-card');
-    if (!card) return;
-    const gap = parseFloat(getComputedStyle(carousel).columnGap) || 24;
-    carousel.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: reduced.matches ? 'instant' : 'smooth' });
-  };
-  byId('testimonial-prev').addEventListener('click', () => moveCarousel(-1));
-  byId('testimonial-next').addEventListener('click', () => moveCarousel(1));
-  carousel.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); moveCarousel(event.key === 'ArrowLeft' ? -1 : 1); }
-  });
+  if (carousel) {
+    const moveCarousel = direction => {
+      const card = carousel.querySelector('.testimonial-card');
+      if (!card) return;
+      const gap = parseFloat(getComputedStyle(carousel).columnGap) || 24;
+      carousel.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: reduced.matches ? 'instant' : 'smooth' });
+    };
+    const prevBtn = byId('testimonial-prev');
+    const nextBtn = byId('testimonial-next');
+    if (prevBtn) prevBtn.addEventListener('click', () => moveCarousel(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => moveCarousel(1));
+    carousel.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); moveCarousel(event.key === 'ArrowLeft' ? -1 : 1); }
+    });
+  }
 
   // Hero stage: layers drift with the pointer according to their depth.
   const stage = byId('hero-stage');
-  const hero = stage.closest('section');
-  if (finePointer.matches) {
+  const hero = stage ? stage.closest('section') : null;
+  if (stage && hero && finePointer.matches) {
     let frame;
     hero.addEventListener('pointermove', event => {
       if (reduced.matches) return;
@@ -277,6 +281,10 @@
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
     }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     reveals.forEach(node => revealObserver.observe(node));
+    // Safety fallback: ensure all reveal elements become visible even if IntersectionObserver is delayed
+    setTimeout(() => {
+      document.querySelectorAll('.reveal:not(.is-visible)').forEach(node => node.classList.add('is-visible'));
+    }, 400);
     const chapterObserver = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) setChapter(entry.target);
     }), { rootMargin: '-45% 0px -50% 0px' });
