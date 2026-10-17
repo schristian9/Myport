@@ -99,7 +99,7 @@
   });
   document.querySelectorAll('.case-open').forEach(button => button.addEventListener('click', () => {
     const item = data.cases[Number(button.dataset.case)];
-    const sections = [['Context', item.context], ['Customer challenge', item.challenge], ['Strategy', item.strategy]];
+    const sections = [['Context', item.context], ['Customer challenge', item.challenge], ['Diagnosis', item.diagnosis], ['Strategy', item.strategy]];
     openDialog('CASE STUDY', `<h2 id="dialog-title">${e(item.subtitle)}</h2><p>${e(item.title)}</p>${sections.map(([title, text]) => `<h3>${e(title)}</h3><p>${e(text)}</p>`).join('')}<h3>Actions taken</h3><ul>${item.actions.map(text => `<li>${e(text)}</li>`).join('')}</ul><h3>Cross-functional collaboration</h3><p>${e(item.collaboration)}</p><div class="dialog-result"><strong>${e(item.metric)}</strong><p>${e(item.metricLabel)} · ${e(item.secondary)}</p></div><h3>Result</h3><p>${e(item.result)}</p><h3>The takeaway</h3><p>${e(item.takeaway)}</p>`);
   }));
   document.querySelectorAll('.article-open').forEach(button => button.addEventListener('click', () => {
@@ -274,7 +274,73 @@
   // The HTML starts disabled so no-JavaScript submission cannot leak form values into a URL.
   byId('contact-fields').disabled = false;
 
-  // Observers: reveals, chapter tracking and counters. Without support, everything is simply visible.
+  // Growth story cube: scroll progress drives rotation and the active KPI stage.
+  const cubeSection = document.getElementById('growth-story');
+  const cubeStage = document.querySelector('[data-cube-stage]');
+  const cubeEl = document.querySelector('[data-cube]');
+  const cubeNarrative = document.querySelector('.cube-narrative');
+  if (cubeSection && cubeStage && cubeEl && data.growthStages?.length) {
+    const stages = data.growthStages;
+    const dots = [...document.querySelectorAll('[data-cube-dot]')];
+    const indexEl = byId('cube-stage-index');
+    const labelEl = byId('cube-stage-label');
+    const textEl = byId('cube-stage-text');
+    const evidenceEl = byId('cube-stage-evidence');
+    const hint = document.querySelector('.cube-scroll-hint');
+    const TOTAL_TURNS = stages.length - 1;
+
+    const setStage = index => {
+      const item = stages[index];
+      cubeEl.style.setProperty('--stage', index);
+      indexEl.textContent = `${pad(index + 1)} / ${pad(stages.length)}`;
+      labelEl.textContent = item.label;
+      textEl.textContent = item.narrative;
+      evidenceEl.textContent = item.evidence;
+      dots.forEach((dot, i) => {
+        if (i === index) dot.setAttribute('aria-current', 'true'); else dot.removeAttribute('aria-current');
+      });
+      if (!reduced.matches && cubeNarrative?.animate) cubeNarrative.animate([{ opacity: .3, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 400, easing: EASE });
+    };
+
+    dots.forEach((dot, index) => dot.addEventListener('click', () => {
+      const target = cubeStage.getBoundingClientRect().top + window.scrollY + (index / TOTAL_TURNS) * (cubeStage.offsetHeight - window.innerHeight);
+      window.scrollTo({ top: target, behavior: reduced.matches ? 'auto' : 'smooth' });
+    }));
+
+    if (reduced.matches || !window.IntersectionObserver) {
+      setStage(0);
+      cubeEl.classList.add('cube-static');
+      hint?.remove();
+    } else {
+      let ticking = false;
+      let activeStage = -1;
+      let firstPass = true;
+      const update = () => {
+        ticking = false;
+        const rect = cubeStage.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+        const turns = progress * TOTAL_TURNS;
+        const x = -38 + progress * 22;
+        const y = -26 + progress * 14;
+        cubeEl.style.transform = `rotateX(${x.toFixed(2)}deg) rotateY(${(turns * 90).toFixed(2)}deg)`;
+        const stage = Math.min(Math.round(turns), TOTAL_TURNS);
+        if (stage !== activeStage || firstPass) {
+          activeStage = stage;
+          firstPass = false;
+          setStage(stage);
+        }
+        if (hint) hint.style.opacity = progress > 0.05 ? '0' : '1';
+      };
+      const onScroll = () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
+    }
+  }
+
   const reveals = [...document.querySelectorAll('.reveal')];
   if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
@@ -289,22 +355,6 @@
       if (entry.isIntersecting) setChapter(entry.target);
     }), { rootMargin: '-45% 0px -50% 0px' });
     document.querySelectorAll('section[data-chapter]').forEach(section => chapterObserver.observe(section));
-    const counters = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      counters.unobserve(entry.target);
-      if (reduced.matches) return;
-      const metric = data.metrics[Number(entry.target.dataset.metric)];
-      const output = entry.target.querySelector('span');
-      const start = performance.now();
-      const tick = now => {
-        const progressValue = Math.min((now - start) / 1200, 1);
-        const value = metric.value * (1 - Math.pow(1 - progressValue, 3));
-        output.textContent = `${metric.prefix || ''}${value.toFixed(metric.decimals || 0)}${metric.suffix || ''}`;
-        if (progressValue < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }), { threshold: 0.5 });
-    document.querySelectorAll('.counter').forEach(node => counters.observe(node));
   } else {
     reveals.forEach(node => node.classList.add('is-visible'));
   }

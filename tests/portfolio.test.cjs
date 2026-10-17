@@ -15,15 +15,25 @@ function render(data) {
   const nodes = Object.fromEntries(ids.map(id => [id, { innerHTML: '', hidden: false }]));
   const names = [{ textContent: '' }, { textContent: '' }];
   const meta = {};
+  const cube = { innerHTML: '' };
   const document = {
     title: '',
     getElementById(id) { return nodes[id] || null; },
-    querySelectorAll(selector) { assert.equal(selector, '[data-name]'); return names; },
-    querySelector(selector) { assert.equal(selector, 'meta[property="og:title"]'); return meta; }
+    querySelectorAll(selector) {
+      if (selector === '[data-cube-dot]') return [];
+      assert.equal(selector, '[data-name]');
+      return names;
+    },
+    querySelector(selector) {
+      if (selector === '[data-cube]') return cube;
+      if (selector === '[data-cube-progress]') return { classList: { add() {} } };
+      assert.equal(selector, 'meta[property="og:title"]');
+      return meta;
+    }
   };
   const context = vm.createContext({ window: { PORTFOLIO: data }, document });
   vm.runInContext(read('portfolio-render.js'), context);
-  return { nodes, names, document, meta };
+  return { nodes, names, document, meta, cube };
 }
 test('all application scripts parse', () => {
   for (const file of ['portfolio-data.js', 'portfolio-render.js', 'app.js']) {
@@ -54,10 +64,44 @@ test('illustrative scenarios have full case study content', () => {
   const data = loadData();
   assert.equal(data.cases.length, 3);
   for (const item of data.cases) {
-    for (const key of ['title', 'challenge', 'context', 'strategy', 'collaboration', 'result', 'takeaway']) assert.ok(item[key]);
+    for (const key of ['title', 'challenge', 'context', 'diagnosis', 'strategy', 'collaboration', 'result', 'takeaway']) assert.ok(item[key]);
     assert.ok(item.actions.length >= 3);
     assert.match(item.result, /Illustrative outcome/);
   }
+});
+const EXPECTED_STAGES = ['Customer Adoption', 'Churn Rate', 'Net Revenue Retention', 'Revenue Growth', 'Expansion & Upsell'];
+const escapeLabel = value => value.replace(/&/g, '&amp;');
+test('growth stages tell the five-stage customer value story', () => {
+  const data = loadData();
+  assert.equal(data.growthStages.length, 5);
+  const labels = data.growthStages.map(stage => stage.label);
+  for (let i = 0; i < EXPECTED_STAGES.length; i++) {
+    assert.equal(labels[i], EXPECTED_STAGES[i], `stage ${i}`);
+  }
+  for (const stage of data.growthStages) {
+    for (const key of ['label', 'narrative', 'evidence']) assert.ok(stage[key]);
+  }
+});
+test('cube renders one labelled face per stage with visible tiles', () => {
+  const data = loadData();
+  const { cube } = render(data);
+  const faces = (cube.innerHTML.match(/class="cube-face cube-face-/g) || []).length;
+  assert.equal(faces, 5);
+  for (const label of EXPECTED_STAGES) {
+    assert.ok(cube.innerHTML.includes(escapeLabel(label)), `missing face label: ${label}`);
+  }
+  const tiles = (cube.innerHTML.match(/<i><\/i>/g) || []).length;
+  assert.equal(tiles, 45);
+});
+test('evidence ledger entries carry measured, moved and matters context', () => {
+  const data = loadData();
+  assert.ok(data.evidence.length >= 5);
+  for (const item of data.evidence) {
+    for (const key of ['value', 'label', 'measured', 'moved', 'matters', 'source']) assert.ok(item[key]);
+  }
+  const { nodes } = render(data);
+  assert.match(nodes['evidence-ledger'].innerHTML, /evidence-row/);
+  assert.match(nodes['evidence-ledger'].innerHTML, /What moved it/);
 });
 test('renders portfolio with clear examples and no unverified credentials', () => {
   const data = loadData();
@@ -67,7 +111,7 @@ test('renders portfolio with clear examples and no unverified credentials', () =
   if (nodes['testimonials-grid']) {
     assert.match(nodes['testimonials-grid'].innerHTML, /SAMPLE TESTIMONIAL/);
   }
-  assert.doesNotMatch(nodes.metrics.innerHTML, /Placeholder/);
+  assert.doesNotMatch(nodes['evidence-ledger'].innerHTML, /Placeholder/);
   assert.match(nodes['journey-stages'].innerHTML, /aria-pressed="true"/);
 });
 test('interactive rails render with a single initial active state', () => {
@@ -131,4 +175,13 @@ test('stylesheet has balanced blocks and responsive accessibility rules', () => 
   assert.match(css, /#navigation>a:not\(\.button\)\{[^}]*white-space:nowrap/);
   assert.match(css, /\.nav-wrap\{[^}]*display:flex/);
   assert.match(css, /@media print/);
+  assert.match(css, /preserve-3d/);
+});
+test('growth story section is wired for scroll-driven rotation', () => {
+  assert.match(html, /data-cube-stage/);
+  assert.match(html, /class="cube" data-cube/);
+  assert.match(read('app.js'), /growth-story/);
+  assert.match(read('app.js'), /requestAnimationFrame/);
+  const growthCount = (html.match(/data-cube-dot=/g) || []).length;
+  assert.equal(growthCount, 5);
 });
