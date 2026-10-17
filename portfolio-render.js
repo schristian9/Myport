@@ -59,38 +59,7 @@
       }).join(''));
     }
 
-    // Evidence ledger: measured / moved / matters per verified metric.
-    if (data.evidence && document.getElementById('evidence-ledger')) {
-      fill('evidence-ledger', data.evidence.map(item => `<article class="evidence-row reveal" data-spot><div class="evidence-value"><strong>${escape(item.value)}</strong><h3>${escape(item.label)}</h3></div><dl class="evidence-detail"><div><dt>Measured</dt><dd>${escape(item.measured)}</dd></div><div><dt>What moved it</dt><dd>${escape(item.moved)}</dd></div><div><dt>Why it mattered</dt><dd>${escape(item.matters)}</dd></div></dl><span class="evidence-source">${escape(item.source)}</span></article>`).join(''));
-    }
-
-    // Growth story cube: one face per stage, labelled for legibility.
-    if (data.growthStages && data.growthStages.length) {
-      window.PortfolioGrowthStages = data.growthStages;
-      const cube = document.querySelector ? document.querySelector('[data-cube]') : null;
-      if (cube) {
-        const faceLabels = ['Customer Adoption', 'Churn Rate', 'Net Revenue Retention', 'Revenue Growth', 'Expansion & Upsell'];
-        const faceTransforms = [
-          'rotateY(0deg)',
-          'rotateY(90deg)',
-          'rotateY(180deg)',
-          'rotateY(-90deg)',
-          'rotateX(-90deg)'
-        ];
-        cube.innerHTML = data.growthStages.map((stage, index) => {
-          const faceNumber = index + 1;
-          return `<div class="cube-face cube-face-${faceNumber}" style="transform:${faceTransforms[index]}"><div class="cube-tiles" aria-hidden="true">${'<i></i>'.repeat(9)}</div><span class="cube-face-label">${escape(faceLabels[index] || stage.label)}</span></div>`;
-        }).join('');
-        const cubeDots = document.querySelectorAll('[data-cube-dot]');
-        if (cubeDots.length) {
-          const progressWrap = document.querySelector('[data-cube-progress]');
-          progressWrap?.classList.add('is-ready');
-        }
-      }
-    }
-
-    const skillsEl = document.getElementById('skills-grid');
-    if (data.skills && skillsEl) {
+    if (data.skills && document.getElementById('skills-grid')) {
       fill('skills-grid', data.skills.map((skill, index) => `<article class="skill-card reveal"><div class="skill-top"><span class="skill-index" aria-hidden="true">${pad(index + 1)}</span><span class="skill-icon" aria-hidden="true">${escape(skill.icon)}</span></div><h3>${escape(skill.title)}</h3><p>${escape(skill.description)}</p>${tags(skill.items)}</article>`).join(''));
     }
     if (data.journey && document.getElementById('journey-stages')) {

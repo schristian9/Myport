@@ -15,43 +15,6 @@ window.PORTFOLIO = {
     { icon: '◇', title: 'Retention', text: 'Identify risk early and create proactive success strategies.' },
     { icon: '↗', title: 'Expansion', text: 'Grow customer value through outcomes, not pushy selling.' }
   ],
-  growthStages: [
-    {
-      label: 'Customer Adoption',
-      face: 0,
-      title: 'Adoption first.',
-      narrative: 'Customers reach proficient use through structured onboarding, tailored training, and a self-service resource hub — the foundation every later stage depends on.',
-      evidence: '92% adoption within 60 days across 120+ new clients.'
-    },
-    {
-      label: 'Churn Rate',
-      face: 1,
-      title: 'Risk surfaced early.',
-      narrative: 'Adoption and engagement signals are reviewed before they become renewal problems. Data analysis and account monitoring turn churn into an operational problem that can be acted on.',
-      evidence: '94% gross retention across a $3.8M portfolio; 11% churn reduction.'
-    },
-    {
-      label: 'Net Revenue Retention',
-      face: 2,
-      title: 'Retention compounds.',
-      narrative: 'When customers keep realizing value, existing accounts grow instead of shrink. Consistent business reviews keep requirements, risks, and expansion conversations on the table.',
-      evidence: '118% NRR across 25+ accounts.'
-    },
-    {
-      label: 'Revenue Growth',
-      face: 3,
-      title: 'Value converts to revenue.',
-      narrative: 'Renewal conversations framed around demonstrated outcomes — not contractual terms — secure recurring revenue and protect the portfolio.',
-      evidence: '$450K in renewals secured via value-led executive presentations.'
-    },
-    {
-      label: 'Expansion & Upsell',
-      face: 4,
-      title: 'Growth from within.',
-      narrative: 'Quarterly business reviews surface customer requirements as they evolve, creating a pipeline of expansion opportunities that support both customer goals and company growth.',
-      evidence: '$900K in expansion pipeline from 96% QBR completion.'
-    }
-  ],
   aiProjects: [
     {
       title: 'DecodeDx — AI-Driven Health Platform',
@@ -136,8 +99,7 @@ window.PORTFOLIO = {
       metricLabel: 'manual effort',
       secondary: 'Improved operational efficiency',
       challenge: 'Translating complex clinical workflows and user requirements into scalable automated processes without sacrificing usability.',
-      context: 'A clinical environment where manual workflows and complex user requirements slowed day-to-day operations across the platform.',
-      diagnosis: 'Mapping existing workflows showed that manual handoffs — not missing features — were where effort and errors accumulated.',
+      context: 'AI-powered SaaS health platform DecodeDx translating user requirements into automated workflows.',
       strategy: 'Translate user requirements into automated workflows to streamline operations and eliminate manual friction.',
       actions: [
         'Analyzed user requirements and mapped key operational and clinical workflows.',
@@ -158,8 +120,7 @@ window.PORTFOLIO = {
       metricLabel: 'retention rate',
       secondary: '-11% churn reduction',
       challenge: 'Maintaining high gross retention across enterprise accounts and reframing renewal conversations around realized business value.',
-      context: 'Enterprise accounts approaching renewal across a portfolio where past discussions had centred on contract terms rather than delivered value.',
-      diagnosis: 'Account and health-metric audits revealed which relationships lacked a documented value story going into renewal.',
+      context: 'Enterprise accounts and revenue growth across a $2.2M portfolio.',
       strategy: 'Develop executive presentations that demonstrate customer outcomes and reframe renewal discussions around business value.',
       actions: [
         'Audited account activity and customer health metrics to identify early risks.',
@@ -180,8 +141,7 @@ window.PORTFOLIO = {
       metricLabel: 'product adoption',
       secondary: '22% faster time-to-value',
       challenge: 'Ad hoc customer onboarding led to inconsistent adoption and prolonged time-to-value across a high volume of new accounts.',
-      context: 'A high volume of new clients arriving through a mid-market portfolio with no shared onboarding structure.',
-      diagnosis: 'Comparing onboarding paths showed adoption varied with implementation quality, not customer effort — the process itself was the variable.',
+      context: '120+ new clients across a mid-market portfolio requiring rapid, scalable onboarding.',
       strategy: 'Replace ad hoc onboarding with a structured implementation and training programme and a self-service resource hub.',
       actions: [
         'Designed standardized onboarding milestones and structured implementation timelines.',
@@ -194,55 +154,13 @@ window.PORTFOLIO = {
       takeaway: 'Scaling onboarding requires blending structured processes with self-service resources that empower users immediately.'
     }
   ],
-  evidence: [
-    {
-      value: '118%',
-      label: 'Net Revenue Retention',
-      measured: 'Revenue retained and expanded across 25+ enterprise accounts on a $2.3M ARR portfolio.',
-      moved: 'Coordinated product expansion opportunities around identified customer requirements.',
-      matters: 'Existing accounts grew rather than shrank — the clearest signal customers kept receiving value.',
-      source: 'SeekThem · Senior CSM'
-    },
-    {
-      value: '$450K',
-      label: 'Renewals secured',
-      measured: 'Contract renewals closed through value-led executive presentations.',
-      moved: 'Reframed renewal discussions around demonstrated customer outcomes instead of contract terms.',
-      matters: 'Protected recurring revenue by proving the relationship was working before the renewal date.',
-      source: 'SeekThem · Senior CSM'
-    },
-    {
-      value: '92%',
-      label: 'Adoption within 60 days',
-      measured: 'Product adoption across 120+ newly onboarded clients.',
-      moved: 'Replaced ad hoc onboarding with a structured implementation and training programme.',
-      matters: 'Faster proficiency compounds: it sets up every retention and expansion conversation that follows.',
-      source: 'Meditab Software · Senior Product Deployment Analyst'
-    },
-    {
-      value: '22%',
-      label: 'Faster time-to-value',
-      measured: 'Reduction in time for new customers to reach their first meaningful outcome.',
-      moved: 'Redesigned onboarding workflows and launched a self-service resource hub.',
-      matters: 'Customers reached value sooner, while manual support demand fell at the same time.',
-      source: 'Meditab Software · Senior Product Deployment Analyst'
-    },
-    {
-      value: '$900K',
-      label: 'Expansion pipeline',
-      measured: 'Pipeline generated from a 96% quarterly business review completion rate.',
-      moved: 'Built a consistent QBR process that surfaced customer requirements as they evolved.',
-      matters: 'Regular value reviews turned customer conversations into a predictable growth channel.',
-      source: 'Meditab Software · Senior Product Deployment Analyst'
-    },
-    {
-      value: '94%',
-      label: 'Gross retention',
-      measured: 'Retention maintained across a $3.8M, 15+ account mid-market portfolio.',
-      moved: 'Balanced high-touch engagement with scalable processes, monitoring account activity for early risk.',
-      matters: 'Demonstrates durable relationships across a large portfolio, not just a few flagship accounts.',
-      source: 'Meditab Software · Senior Product Deployment Analyst'
-    }
+  metrics: [
+    { value: 95, suffix: '%', label: 'Customer retention', caption: 'Managed portfolio retention rate', points: '0,32 20,26 40,28 60,18 80,20 100,10 120,5' },
+    { value: 92, suffix: '%', label: 'Product adoption', caption: 'Within 60 days across 120+ clients', points: '0,34 20,30 40,23 60,25 80,13 100,16 120,3' },
+    { value: 2.3, prefix: '$', suffix: 'M', decimals: 1, label: 'Portfolio ARR', caption: 'Enterprise portfolio managed', points: '0,32 20,31 40,24 60,19 80,17 100,9 120,6' },
+    { value: 118, suffix: '%', label: 'Net Retention Rate', caption: 'NRR across 25+ accounts', points: '0,25 20,21 40,24 60,13 80,15 100,8 120,4' },
+    { value: 120, suffix: '+', label: 'New clients onboarded', caption: 'Structured implementation', points: '0,35 20,29 40,29 60,21 80,15 100,12 120,3' },
+    { value: 22, suffix: '%', label: 'Faster time-to-value', caption: 'Redesigned onboarding workflows', points: '0,5 20,12 40,10 60,20 80,23 100,29 120,34' }
   ],
   skills: [
     {
@@ -301,9 +219,7 @@ window.PORTFOLIO = {
     { quote: 'A thoughtful partner who connects the dots between customer needs and business priorities. Sarlinson brings a proactive, collaborative approach to the team.', name: 'Executive Sponsor', role: 'VP Customer Operations · SaaS', initials: 'VP' }
   ],
   credentials: [
-    { name: 'Bachelor of Business Administration', issuer: 'DY Patil University', year: 'Dec 2026', verified: true },
-    { name: 'Project Management Certificate', issuer: 'Google', year: '2022', verified: true },
-    { name: 'Jira Certification', issuer: 'Atlassian', year: '2021', verified: true }
+    { name: 'Bachelor of Business Administration', issuer: 'DY Patil University', year: 'Dec 2026', verified: true }
   ],
   insights: [
     { category: 'CUSTOMER STRATEGY', readingTime: '2 min read', date: '2026-09-13', title: 'Why Customer Success Starts Before Onboarding', excerpt: 'The first step to a successful partnership isn’t a kickoff call. It’s a shared understanding of what success looks like.', paragraphs: ['A customer arrives at onboarding with expectations already formed. Those expectations come from their buying experience, internal conversations, and the promises made along the way. A thoughtful handoff makes that context visible.', 'Start with a shared definition of success: what is the customer trying to change, who needs to be involved, and how will they recognize progress? Capture these answers in the customer’s language rather than relying on a list of purchased features.', 'Sales and Customer Success should agree on ownership, known risks, and the first meaningful milestone. Invite the customer to validate the plan instead of presenting assumptions as facts.', 'A useful first step is a short handoff brief covering desired outcomes, key stakeholders, commitments, and open questions. The goal is continuity: customers should not have to tell their story from the beginning each time they meet a new team.'] },
